@@ -1,4 +1,4 @@
-const scriptURL = 'https://script.google.com/macros/s/1iFsdjLsIrvU07H9ki6Glgy6fph0u_Y-8/exec';
+const scriptURL = 'https://script.google.com/macros/s/AKfycbxBrP5eWT_ei9Y4--j-qgkCqHl6phmcMORYbXxx8vF3UFQwWQay0eehJEhH6G5C8hc/exec';
 
 function setTodayDate() {
     const today = new Date();
