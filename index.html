@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Absensi Kehadiran | HASCI GORONTALO</title>
+    
+    <!-- Tailwind CSS (CDN) & FontAwesome -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    
+    <!-- Memanggil file CSS eksternal -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="flex items-center justify-center min-h-screen p-4">
+
+    <div class="w-full max-w-md bg-white rounded-2xl shadow-xl overflow-hidden">
+        <div class="bg-blue-600 p-6 text-center">
+            <h1 class="text-2xl font-bold text-white tracking-wide">HASCI GORONTALO</h1>
+            <p class="text-blue-100 text-sm mt-1">Formulir Kehadiran Anggota</p>
+        </div>
+
+        <form class="p-6 space-y-5" onsubmit="submitForm(event)">
+            <div>
+                <label for="nama" class="block text-sm font-medium text-gray-700 mb-1">Nama Lengkap</label>
+                <input type="text" id="nama" name="nama" required placeholder="Masukkan nama kamu"
+                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all">
+            </div>
+
+            <div>
+                <label for="tanggal_display" class="block text-sm font-medium text-gray-700 mb-1">Tanggal Kehadiran</label>
+                <input type="date" id="tanggal_display" required readonly
+                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all">
+                <input type="hidden" id="tanggal_hidden" name="tanggal" required>
+                <p class="text-xs text-gray-500 mt-1">Tanggal hanya untuk hari ini.</p>
+            </div>
+
+            <div>
+                <label for="status" class="block text-sm font-medium text-gray-700 mb-1">Status Kehadiran</label>
+                <select id="status" name="status" required onchange="toggleFields()"
+                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all bg-white">
+                    <option value="" disabled selected>Pilih status...</option>
+                    <option value="hadir">Hadir</option>
+                    <option value="sakit">Sakit</option>
+                    <option value="izin">Izin</option>
+                </select>
+            </div>
+
+            <div id="field-hadir" class="hidden space-y-2 p-4 bg-blue-50 border border-blue-100 rounded-lg">
+                <label class="block text-sm font-medium text-blue-800"><i class="fas fa-camera mr-2"></i>Bukti Selfie di Lokasi</label>
+                <input type="file" id="foto_selfie" name="foto_selfie" accept="image/*" capture="environment"
+                    class="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-100 file:text-blue-700 hover:file:bg-blue-200 transition-all">
+                <p class="text-xs text-gray-500 mt-1">Pastikan wajah dan suasana sekitar terlihat jelas.</p>
+            </div>
+
+            <div id="field-sakit" class="hidden space-y-2 p-4 bg-red-50 border border-red-100 rounded-lg">
+                <label for="keterangan_sakit" class="block text-sm font-medium text-red-800"><i class="fas fa-notes-medical mr-2"></i>Keterangan Sakit</label>
+                <textarea id="keterangan_sakit" name="keterangan_sakit" rows="3" placeholder="Sakit apa? Semoga lekas sembuh..."
+                    class="w-full px-4 py-2 border border-red-200 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500 outline-none transition-all"></textarea>
+            </div>
+
+            <div id="field-izin" class="hidden space-y-2 p-4 bg-orange-50 border border-orange-100 rounded-lg">
+                <label for="alasan_izin" class="block text-sm font-medium text-orange-800"><i class="fas fa-info-circle mr-2"></i>Alasan Izin</label>
+                <textarea id="alasan_izin" name="alasan_izin" rows="3" placeholder="Tuliskan alasan izinmu di sini..."
+                    class="w-full px-4 py-2 border border-orange-200 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 outline-none transition-all"></textarea>
+            </div>
+
+            <button type="submit"
+                class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-4 rounded-lg transition-colors shadow-md mt-4">
+                Kirim Absensi
+            </button>
+        </form>
+    </div>
+
+    <script src="js/app.js"></script>
+</body>
+</html>
