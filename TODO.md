@@ -1,0 +1,4 @@
+- [ ] Tambahkan container toast di index.html
+- [ ] Tambahkan styling toast sukses/gagal di css/style.css
+- [ ] Ganti seluruh alert() di js/app.js menjadi toast notifikasi yang menarik
+- [ ] Uji: sukses kirim data, gagal kirim data, dan error jaringan

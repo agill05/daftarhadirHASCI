@@ -54,6 +54,51 @@ function getBase64(file) {
     });
 }
 
+function showToast(type, message) {
+    const container = document.getElementById('toast-container');
+    if (!container) {
+        // Fallback jika container belum ada
+        console.warn('toast-container tidak ditemukan. Pesan:', message);
+        return;
+    }
+
+    const toast = document.createElement('div');
+    const isSuccess = type === 'success';
+
+    toast.className = `toast ${isSuccess ? 'toast-success' : 'toast-error'}`;
+    toast.setAttribute('role', 'status');
+    toast.setAttribute('aria-live', 'polite');
+
+    const icon = isSuccess ? 'fa-check' : 'fa-triangle-exclamation';
+
+    toast.innerHTML = `
+        <div class="toast-icon">
+            <i class="fas ${icon}"></i>
+        </div>
+        <div>
+            <div class="toast-title">${isSuccess ? 'Berhasil' : 'Gagal'}</div>
+            <div class="toast-message">${message}</div>
+        </div>
+        <div class="toast-close" aria-label="Tutup notifikasi" role="button">
+            <i class="fas fa-times"></i>
+        </div>
+    `;
+
+    container.appendChild(toast);
+
+    const closeEl = toast.querySelector('.toast-close');
+    let timer = setTimeout(() => {
+        toast.classList.add('toast-leave');
+        setTimeout(() => toast.remove(), 260);
+    }, 4000);
+
+    closeEl.addEventListener('click', () => {
+        clearTimeout(timer);
+        toast.classList.add('toast-leave');
+        setTimeout(() => toast.remove(), 260);
+    });
+}
+
 async function submitForm(event) {
     event.preventDefault();
 
@@ -97,16 +142,16 @@ async function submitForm(event) {
         const result = await response.json();
 
         if (result.result === 'success') {
-            alert('Mantap! Data kehadiran berhasil disimpan.');
+            showToast('success', 'Mantap! Data kehadiran berhasil disimpan.');
             form.reset();
             setTodayDate();
             toggleFields();
         } else {
-            alert('Gagal menyimpan: ' + (result.error || 'unknown error'));
+            showToast('error', 'Gagal menyimpan: ' + (result.error || 'unknown error'));
         }
     } catch (error) {
         console.error('Error!', error);
-        alert('Terjadi kesalahan jaringan saat mengirim data.');
+        showToast('error', 'Terjadi kesalahan jaringan saat mengirim data.');
     } finally {
         submitBtn.textContent = 'Kirim Absensi';
         submitBtn.disabled = false;
