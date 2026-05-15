@@ -1,4 +1,3 @@
-/* Reset dan Base Styles */
 * {
     box-sizing: border-box;
 }
@@ -10,7 +9,6 @@ body {
     overflow-x: hidden;
 }
 
-/* Background Animations */
 body::before {
     content: '';
     position: fixed;
@@ -32,7 +30,6 @@ body::before {
     66% { transform: translateY(-10px) rotate(-1deg); }
 }
 
-/* Card Container */
 .w-full.max-w-md {
     backdrop-filter: blur(20px);
     border: 1px solid rgba(255, 255, 255, 0.2);
@@ -50,7 +47,6 @@ body::before {
     }
 }
 
-/* Header Section */
 .bg-blue-600 {
     background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
     position: relative;
@@ -79,12 +75,10 @@ h1 {
     text-shadow: 0 2px 10px rgba(0,0,0,0.3);
 }
 
-/* Form Styling */
 form {
     background: rgba(255, 255, 255, 0.95);
 }
 
-/* Input & Select Styling */
 input[type="text"],
 input[type="date"],
 select,
@@ -114,7 +108,6 @@ textarea:focus {
     border-color: #3b82f6;
 }
 
-/* File Input Custom Styling */
 input[type="file"] {
     padding: 12px;
     background: linear-gradient(145deg, #f8fafc, #e2e8f0);
@@ -138,7 +131,6 @@ input[type="file"]::-webkit-file-upload-button:hover {
     box-shadow: 6px 6px 12px rgba(0,0,0,0.3);
 }
 
-/* Status Field Containers */
 #field-hadir {
     background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(96, 165, 250, 0.05) 100%);
     border: 2px solid rgba(59, 130, 246, 0.2);
@@ -157,7 +149,56 @@ input[type="file"]::-webkit-file-upload-button:hover {
     backdrop-filter: blur(10px);
 }
 
-/* Labels */
+.field-active {
+    animation: fieldReveal 220ms ease-out both;
+    box-shadow:
+        0 0 0 4px rgba(59, 130, 246, 0.10),
+        0 18px 40px rgba(0,0,0,0.08);
+    border-color: rgba(59, 130, 246, 0.35) !important;
+}
+
+#field-sakit.field-active {
+    box-shadow:
+        0 0 0 4px rgba(239, 68, 68, 0.10),
+        0 18px 40px rgba(0,0,0,0.08);
+    border-color: rgba(239, 68, 68, 0.35) !important;
+}
+
+#field-izin.field-active {
+    box-shadow:
+        0 0 0 4px rgba(249, 115, 22, 0.10),
+        0 18px 40px rgba(0,0,0,0.08);
+    border-color: rgba(249, 115, 22, 0.35) !important;
+}
+
+#field-hadir label i { color: #1d4ed8; }
+#field-sakit label i { color: #b91c1c; }
+#field-izin label i { color: #c2410c; }
+
+button[type="submit"]:focus-visible {
+    outline: none;
+    box-shadow:
+        0 0 0 4px rgba(147, 197, 253, 0.35),
+        0 20px 40px rgba(59, 130, 246, 0.35);
+}
+
+button[type="submit"]:focus {
+    outline: none;
+}
+
+@keyframes fieldReveal {
+    from {
+        opacity: 0;
+        transform: translateY(8px) scale(0.99);
+        filter: blur(2px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+        filter: blur(0);
+    }
+}
+
 label {
     font-weight: 600;
     letter-spacing: 0.5px;
@@ -179,7 +220,6 @@ label:hover::after {
     width: 30px;
 }
 
-/* Submit Button */
 button[type="submit"] {
     background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 50%, #1e40af 100%);
     box-shadow: 
@@ -208,7 +248,6 @@ button[type="submit"]:active {
     transform: translateY(-2px);
 }
 
-/* Button Pulse Animation */
 button[type="submit"]::before {
     content: '';
     position: absolute;
@@ -227,7 +266,6 @@ button[type="submit"]:hover::before {
     height: 300px;
 }
 
-/* Responsive Design */
 @media (max-width: 640px) {
     body {
         padding: 1rem;

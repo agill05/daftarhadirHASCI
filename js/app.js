@@ -16,7 +16,89 @@ function setTodayDate() {
 
 document.addEventListener('DOMContentLoaded', () => {
     setTodayDate();
+    updatePreviewSummary();
 });
+
+document.addEventListener('input', (e) => {
+    if (e?.target?.id === 'nama') updatePreviewSummary();
+});
+
+function getTodayValue() {
+    const tanggalHidden = document.getElementById('tanggal_hidden');
+    return tanggalHidden?.value || '';
+}
+
+function formatTanggalDisplay(value) {
+    if (!value) return '-';
+    try {
+        const [yyyy, mm, dd] = value.split('-').map(Number);
+        const date = new Date(yyyy, mm - 1, dd);
+        return date.toLocaleDateString('id-ID', { weekday: 'short', year: 'numeric', month: 'short', day: '2-digit' });
+    } catch {
+        return value;
+    }
+}
+
+function updatePreviewSummary() {
+    const previewSummary = document.getElementById('preview-summary');
+    const previewNama = document.getElementById('preview-nama');
+    const previewTanggal = document.getElementById('preview-tanggal');
+    const previewStatus = document.getElementById('preview-status');
+    const previewRequiredNote = document.getElementById('preview-required-note');
+
+    if (!previewSummary || !previewNama || !previewTanggal || !previewStatus || !previewRequiredNote) return;
+
+    const nama = document.getElementById('nama')?.value?.trim() || '-';
+    const status = document.getElementById('status')?.value || '';
+
+    const tanggal = formatTanggalDisplay(getTodayValue());
+
+    previewNama.textContent = nama;
+    previewTanggal.textContent = `Tanggal: ${tanggal}`;
+
+    let statusLabel = '-';
+    let requiredText = 'Pilih status untuk melihat detail';
+
+    if (status === 'hadir') {
+        statusLabel = 'Hadir';
+        requiredText = 'Wajib: Foto Selfie';
+    } else if (status === 'sakit') {
+        statusLabel = 'Sakit';
+        requiredText = 'Wajib: Keterangan Sakit';
+    } else if (status === 'izin') {
+        statusLabel = 'Izin';
+        requiredText = 'Wajib: Alasan Izin';
+    }
+
+    previewStatus.textContent = `Status: ${statusLabel}`;
+    previewRequiredNote.textContent = requiredText;
+
+    const show = nama !== '-' || status !== '';
+    previewSummary.classList.toggle('hidden', !show);
+}
+
+function setFieldActive(fieldEl, active) {
+    if (!fieldEl) return;
+    fieldEl.classList.toggle('field-active', !!active);
+}
+
+function resetNonRelevantFields(status) {
+    const fotoInput = document.getElementById('foto_selfie');
+    const sakitTextarea = document.getElementById('keterangan_sakit');
+    const izinTextarea = document.getElementById('alasan_izin');
+
+    if (!fotoInput || !sakitTextarea || !izinTextarea) return;
+
+    if (status !== 'hadir') {
+        fotoInput.value = '';
+    }
+    if (status !== 'sakit') {
+        sakitTextarea.value = '';
+    }
+    if (status !== 'izin') {
+        izinTextarea.value = '';
+    }
+}
 
 function toggleFields() {
     const status = document.getElementById('status').value;
@@ -29,20 +111,35 @@ function toggleFields() {
     fieldSakit.classList.add('hidden');
     fieldIzin.classList.add('hidden');
 
-    document.getElementById('foto_selfie').required = false;
-    document.getElementById('keterangan_sakit').required = false;
-    document.getElementById('alasan_izin').required = false;
+    setFieldActive(fieldHadir, false);
+    setFieldActive(fieldSakit, false);
+    setFieldActive(fieldIzin, false);
+
+    const fotoInput = document.getElementById('foto_selfie');
+    const sakitTextarea = document.getElementById('keterangan_sakit');
+    const izinTextarea = document.getElementById('alasan_izin');
+
+    fotoInput.required = false;
+    sakitTextarea.required = false;
+    izinTextarea.required = false;
+
+    resetNonRelevantFields(status);
 
     if (status === 'hadir') {
         fieldHadir.classList.remove('hidden');
-        document.getElementById('foto_selfie').required = true;
+        setFieldActive(fieldHadir, true);
+        fotoInput.required = true;
     } else if (status === 'sakit') {
         fieldSakit.classList.remove('hidden');
-        document.getElementById('keterangan_sakit').required = true;
+        setFieldActive(fieldSakit, true);
+        sakitTextarea.required = true;
     } else if (status === 'izin') {
         fieldIzin.classList.remove('hidden');
-        document.getElementById('alasan_izin').required = true;
+        setFieldActive(fieldIzin, true);
+        izinTextarea.required = true;
     }
+
+    updatePreviewSummary();
 }
 
 function getBase64(file) {
@@ -146,6 +243,7 @@ async function submitForm(event) {
             form.reset();
             setTodayDate();
             toggleFields();
+            updatePreviewSummary();
         } else {
             showToast('error', 'Gagal menyimpan: ' + (result.error || 'unknown error'));
         }
@@ -153,7 +251,7 @@ async function submitForm(event) {
         console.error('Error!', error);
         showToast('error', 'Terjadi kesalahan jaringan saat mengirim data.');
     } finally {
-        submitBtn.textContent = 'Kirim Absensi';
+        submitBtn.textContent = 'Kirim Kehadiran';
         submitBtn.disabled = false;
     }
 }
