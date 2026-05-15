@@ -57,7 +57,6 @@ function getBase64(file) {
 function showToast(type, message) {
     const container = document.getElementById('toast-container');
     if (!container) {
-        // Fallback jika container belum ada
         console.warn('toast-container tidak ditemukan. Pesan:', message);
         return;
     }
@@ -110,6 +109,7 @@ async function submitForm(event) {
 
     const formData = new FormData(form);
     const status = formData.get('status');
+    const namaPengirim = formData.get('nama') || 'Kamu';
 
     const dataPayload = {
         nama: formData.get('nama'),
@@ -142,7 +142,7 @@ async function submitForm(event) {
         const result = await response.json();
 
         if (result.result === 'success') {
-            showToast('success', 'Mantap! Data kehadiran berhasil disimpan.');
+            showToast('success', `${namaPengirim}! Data kehadiran berhasil disimpan.`);
             form.reset();
             setTodayDate();
             toggleFields();
