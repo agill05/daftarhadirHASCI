@@ -17,6 +17,9 @@ function setTodayDate() {
 document.addEventListener('DOMContentLoaded', () => {
     setTodayDate();
     updatePreviewSummary();
+
+    const copyrightYearEl = document.getElementById('copyright-year');
+    if (copyrightYearEl) copyrightYearEl.textContent = String(new Date().getFullYear());
 });
 
 document.addEventListener('input', (e) => {
